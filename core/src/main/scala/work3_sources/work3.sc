@@ -1,54 +1,28 @@
 import scala.annotation.tailrec
-
-trait Three {
-  def value: Int
-  def rightThree: Option[Three]
-  def leftThree: Option[Three]
-}
-
-final class ThreeNode(val data: Int, left: Option[Three] = None, right: Option[Three] = None) extends Three {
-
-  def value: Int = data
-
-  def rightThree: Option[Three] = right
-
-  def leftThree: Option[Three] = left
-}
-
-def printTree(three: Three): Unit =
-  def helper(node: Option[Three]): Unit = node match {
-    case Some(leaf) => {
-      helper(leaf.leftThree)
-      println(leaf.value)
-      helper(leaf.rightThree)
-    }
-    case _ =>
-  }
-  helper(Some(three))
-
-def insert(data: Int, node: Three): Three =
-  def insertHelper(node: Option[Three], data: Int): Three = node match {
-    case Some(threeNode) =>
-      if (threeNode.value > data)
-        println("add to left")
-        new ThreeNode(threeNode.value, left = Some(insertHelper(threeNode.leftThree, data)), right = threeNode.rightThree)
-      else
-        println("add to right")
-        new ThreeNode(threeNode.value, left = threeNode.leftThree, right = Some(insertHelper(threeNode.rightThree, data)))
-
-    case None =>
-      println("return node")
-      new ThreeNode(data, None, None)
-  }
-  insertHelper(Some(node), data)
-
+import work3_sources._
 
 var root: Three = ThreeNode(
   10
 )
 
+println("Вывыод дерева:")
 printTree(root)
 
+println("Вызов функции insert(15, root)")
 root = insert(15, root)
+println("Вызов функции insert(7, root)")
+root = insert(7, root)
 
+println("Вывыод дерева:")
 printTree(root)
+
+println("Cумма элементов дерава:")
+println(threeSum(root))
+println("15 содержится в дереве:")
+println(if (contains(15, Some(root))) "Да" else "Нет" )
+println("13 содержится в дереве:")
+println(if (contains(13, Some(root))) "Да" else "Нет" )
+println("10 содержится в дереве:")
+println(if (contains(10, Some(root))) "Да" else "Нет" )
+
+case class Value(data: Int)
